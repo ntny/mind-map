@@ -1,0 +1,8 @@
+*.class
+*.log
+*.target
+.bsp
+.idea/
+!.idea/icon*.png
+build/
+src/main/resources/gitignore/*
