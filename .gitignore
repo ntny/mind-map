@@ -1,6 +1,6 @@
 *.class
 *.log
-*/target/**
+**/target/**
 .bsp
 .idea/
 !.idea/icon*.png
