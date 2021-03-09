@@ -25,4 +25,4 @@ object Application extends IOApp {
         .map(_ => ExitCode.Success)
     }
   }
-}
+
