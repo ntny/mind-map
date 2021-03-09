@@ -1,6 +1,7 @@
 package com.ntny.web
 
-import com.ntny.models.Link
+import com.ntny.dba.links.Link
+import com.ntny.web.features.links.models.ValidatedLink
 import io.circe.{Decoder, Encoder}
 import org.http4s.EntityEncoder
 import org.http4s.circe.jsonEncoderOf
@@ -13,6 +14,6 @@ private[web] class JsonCodecs {
   import io.circe.refined._
   import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
 
-  implicit val linkDecoder: Decoder[Link] = deriveDecoder[Link]
+  implicit val linkDecoder: Decoder[ValidatedLink] = deriveDecoder[ValidatedLink]
   implicit val linkEncoder: Encoder[Link] = deriveEncoder[Link]
 }
