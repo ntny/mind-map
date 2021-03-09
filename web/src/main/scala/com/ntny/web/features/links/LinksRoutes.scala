@@ -17,8 +17,6 @@ import com.ntny.web.features.links.models.ConverterSyntax._
 class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow]
 (
   transactor: HikariTransactor[F]
-  , putLinkCommand: PutLinkCommand
-  , ownerLinksQuery: OwnerLinksQuery
 ) extends Http4sDsl[F] {
 
   object ownerParam extends QueryParamDecoderMatcher[String]("owner")
@@ -26,11 +24,11 @@ class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow]
   def routes: HttpRoutes[F] = HttpRoutes.of[F]{
     
     case GET -> Root / "links" :? ownerParam(owner) =>
-      val response = ownerLinksQuery.exec(owner).transact(transactor)
+      val response = OwnerLinksQuery(owner).transact(transactor)
       Ok(response)
     case req @ PUT -> Root / "links" =>
       req.decodeR[ValidatedLink]{ link: ValidatedLink =>
-        Ok(putLinkCommand.exec(link.toDbo).transact(transactor))
+        Ok(PutLinkCommand(link.toDbo).transact(transactor))
       }
   }
 }

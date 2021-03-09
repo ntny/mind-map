@@ -12,11 +12,7 @@ object Application extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
     Infrastructure.transactor().use{ xa =>
       val router = Router(
-        version.v1 -> new LinksRoutes[IO](
-          xa,
-          new PutLinkCommand,
-          new OwnerLinksQuery
-        ).routes
+        version.v1 -> new LinksRoutes[IO](xa).routes
       )
 
       import org.http4s.implicits._
