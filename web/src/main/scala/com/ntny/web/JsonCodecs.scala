@@ -18,8 +18,4 @@ private[web] class JsonCodecs {
 
   implicit val linkDecoder: Decoder[ValidatedLink] = deriveDecoder[ValidatedLink]
   implicit val linkEncoder: Encoder[Link] = deriveEncoder[Link]
-
-  implicit val ownerQueryParamDecoder: QueryParamDecoder[ValidatedOwner] =
-    QueryParamDecoder[String]
-      .map(id => ValidatedOwner(UUID.fromString(id)))
 }

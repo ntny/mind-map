@@ -8,6 +8,7 @@ import com.ntny.dba.links.queries.OwnerLinksQuery
 import com.ntny.web.decoder._
 import com.ntny.web.features.links.models.{ValidatedLink, ValidatedOwner}
 import com.ntny.web.json._
+import com.ntny.web.query._
 import doobie.hikari.HikariTransactor
 import doobie.implicits._
 import org.http4s.{HttpRoutes, ParseFailure}
