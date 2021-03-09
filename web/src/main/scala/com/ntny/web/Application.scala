@@ -6,7 +6,7 @@ import org.http4s.HttpApp
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 
-object Application extends IOApp {
+object Application extends IOApp
   override def run(args: List[String]): IO[ExitCode] = {
     Infrastructure.transactor().use{ xa =>
       val router = Router(
