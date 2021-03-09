@@ -14,12 +14,12 @@ import org.http4s.circe.JsonDecoder
 import org.http4s.dsl.Http4sDsl
 import com.ntny.web.features.links.models.ConverterSyntax._
 
-class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow](
-                                                                              transactor: HikariTransactor[F]
-                                                                              , putLinkCommand: PutLinkCommand
-                                                                              , ownerLinksQuery: OwnerLinksQuery
-                                                                            )
-  extends Http4sDsl[F] {
+class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow]
+(
+  transactor: HikariTransactor[F]
+  , putLinkCommand: PutLinkCommand
+  , ownerLinksQuery: OwnerLinksQuery
+) extends Http4sDsl[F] {
 
   object ownerParam extends QueryParamDecoderMatcher[String]("owner")
 
