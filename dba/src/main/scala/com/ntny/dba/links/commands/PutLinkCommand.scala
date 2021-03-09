@@ -6,8 +6,8 @@ import doobie.free.connection.ConnectionIO
 import doobie.implicits._
 import doobie.implicits.javatime._
 
-class PutLinkCommand extends Command[ConnectionIO, NewLink] {
-  override def exec(link: NewLink): ConnectionIO[Int] = {
+class PutLinkCommand(link: NewLink) extends Command[ConnectionIO] {
+  override def exec(): ConnectionIO[Int] = {
     sql"""
          INSERT INTO Links (
                    owner_id
@@ -25,4 +25,8 @@ class PutLinkCommand extends Command[ConnectionIO, NewLink] {
                  )
        """.update.run
   }
+}
+
+object PutLinkCommand{
+  def apply(link: NewLink): ConnectionIO[Int] = new PutLinkCommand(link).exec()
 }

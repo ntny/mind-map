@@ -6,9 +6,9 @@ import com.ntny.dba.codecs.readers._
 import com.ntny.dba.links.Link
 import doobie.free.connection.ConnectionIO
 
-class OwnerLinksQuery extends Query[ConnectionIO, String, List[Link]] {
+class OwnerLinksQuery(owner: String) extends Query[ConnectionIO, List[Link]] {
 
-  override def exec(owner: String): ConnectionIO[List[Link]] = {
+  override def exec(): ConnectionIO[List[Link]] = {
     sql"""
         SELECT
           url
@@ -19,4 +19,8 @@ class OwnerLinksQuery extends Query[ConnectionIO, String, List[Link]] {
          WHERE owner_id = $owner::uuid
        """.query[Link].to[List]
   }
+}
+
+object OwnerLinksQuery{
+  def apply(owner: String): ConnectionIO[List[Link]] = new OwnerLinksQuery(owner).exec()
 }
