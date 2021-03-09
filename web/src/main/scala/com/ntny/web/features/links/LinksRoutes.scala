@@ -14,19 +14,23 @@ import org.http4s.circe.JsonDecoder
 import org.http4s.dsl.Http4sDsl
 import com.ntny.web.features.links.models.ConverterSyntax._
 
-class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow](transactor: HikariTransactor[F])
-  extends Http4sDsl[F] {
+class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow]
+(
+  transactor: HikariTransactor[F]
+  , putLinkCommand: PutLinkCommand
+  , ownerLinksQuery: OwnerLinksQuery
+) extends Http4sDsl[F] {
 
   object ownerParam extends QueryParamDecoderMatcher[String]("owner")
 
   def routes: HttpRoutes[F] = HttpRoutes.of[F]{
     
     case GET -> Root / "links" :? ownerParam(owner) =>
-      val response = OwnerLinksQuery(owner).exec().transact(transactor)
+      val response = ownerLinksQuery.exec(owner).transact(transactor)
       Ok(response)
     case req @ PUT -> Root / "links" =>
       req.decodeR[ValidatedLink]{ link: ValidatedLink =>
-        Ok(PutLinkCommand(link.toDbo).exec().transact(transactor))
+        Ok(putLinkCommand.exec(link.toDbo).transact(transactor))
       }
   }
 }
