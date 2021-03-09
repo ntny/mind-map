@@ -24,6 +24,7 @@ class LinksRoutes[F[_]: Defer: Monad: BracketThrow: JsonDecoder: MonadThrow]
   object ownerParam extends QueryParamDecoderMatcher[String]("owner")
 
   def routes: HttpRoutes[F] = HttpRoutes.of[F]{
+    
     case GET -> Root / "links" :? ownerParam(owner) =>
       val response = ownerLinksQuery.exec(owner).transact(transactor)
       Ok(response)
