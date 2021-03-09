@@ -4,9 +4,10 @@ import com.ntny.dba.Query
 import doobie.implicits._
 import com.ntny.dba.codecs.readers._
 import com.ntny.dba.links.Link
+import com.ntny.dba.links.queries.inputs.Owner
 import doobie.free.connection.ConnectionIO
 
-class OwnerLinksQuery(owner: String) extends Query[ConnectionIO, List[Link]] {
+class OwnerLinksQuery(owner: Owner) extends Query[ConnectionIO, List[Link]] {
 
   override def exec(): ConnectionIO[List[Link]] = {
     sql"""
@@ -16,11 +17,11 @@ class OwnerLinksQuery(owner: String) extends Query[ConnectionIO, List[Link]] {
           , description
           , deadline
          FROM Links
-         WHERE owner_id = $owner::uuid
+         WHERE owner_id = ${owner.id.toString}::uuid
        """.query[Link].to[List]
   }
 }
 
 object OwnerLinksQuery{
-  def apply(owner: String): ConnectionIO[List[Link]] = new OwnerLinksQuery(owner).exec()
+  def apply(owner: Owner): ConnectionIO[List[Link]] = new OwnerLinksQuery(owner).exec()
 }
