@@ -25,14 +25,14 @@ class LinksRoutes[F[_] : Defer : Monad : BracketThrow : JsonDecoder : MonadThrow
 
   def routes: HttpRoutes[F] = HttpRoutes.of[F] {
 
-    case GET -> Root / "links" :? ownerParam(request: ValidatedNel[ParseFailure, ValidatedOwner]) =>
+    case GET -> Root / "links" :? ownerParam(request) =>
       request.fold(
         _ => BadRequest("unable to parse parameter owner"),
-        owner => Ok(OwnerLinksQuery(owner.toDbo).transact(transactor))
+        owner => Ok(OwnerLinksQuery(owner.toDomain).transact(transactor))
       )
     case req@PUT -> Root / "links" =>
       req.decodeR[ValidatedLink] { link: ValidatedLink =>
-        Ok(PutLinkCommand(link.toDbo).transact(transactor))
+        Ok(PutLinkCommand(link.toDomain).transact(transactor))
       }
   }
 }
