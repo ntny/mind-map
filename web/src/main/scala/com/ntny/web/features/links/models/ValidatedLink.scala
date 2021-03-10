@@ -16,8 +16,3 @@ case class ValidatedLink(
                  , description: Option[NonEmptyString]
                  , deadline: Instant
                )
-
-object ValidatedLink{
-  import eu.timepit.refined.auto._
-  var c: String Refined And[NonEmpty, MaxSize[3]] = "d"
-}
