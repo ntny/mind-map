@@ -9,12 +9,12 @@ import com.ntny.dba.links.rows.NewLink
 object ConverterSyntax {
 
   implicit class ValidatedOwnerOps(owner: ValidatedOwner) {
-    def toDbo = Owner(owner.id)
+    def toDomain = Owner(UUID.fromString(owner.id.value))
   }
 
   implicit class ValidatedLinkOps(link: ValidatedLink) {
-    def toDbo = NewLink(
-      link.ownerId
+    def toDomain = NewLink(
+      UUID.fromString(link.ownerId.value)
       , link.url.value
       , link.name.value
       , link.description.map(_.value)

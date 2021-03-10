@@ -1,14 +1,23 @@
 package com.ntny.web
 
 import java.util.UUID
-
 import com.ntny.web.features.links.models.ValidatedOwner
-import org.http4s.QueryParamDecoder
+import eu.timepit.refined.api.{Refined, Validate}
+import eu.timepit.refined.refineV
+import eu.timepit.refined.string.Uuid
+import org.http4s.{ParseFailure, QueryParamDecoder}
 
-object query extends QueryCodecs{}
+object query extends QueryCodecs {}
 
-private [web] class QueryCodecs {
+private[web] class QueryCodecs {
+
+  import io.circe.refined._
+  import eu.timepit.refined.types.string._
+  import cats.syntax.all._
+  import eu.timepit.refined._
+
   implicit val ownerQueryParamDecoder: QueryParamDecoder[ValidatedOwner] =
     QueryParamDecoder[String]
-      .map(id => ValidatedOwner(UUID.fromString(id)))
+      .emap(id => refineV[Uuid](id).leftMap(m => ParseFailure(m,m)))
+      .map(id => ValidatedOwner(id))
 }
