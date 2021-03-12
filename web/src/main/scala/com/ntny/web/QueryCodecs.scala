@@ -1,7 +1,7 @@
 package com.ntny.web
 
 import java.util.UUID
-import com.ntny.web.features.links.models.{ValidatedCategory, ValidatedOwner}
+import com.ntny.web.features.links.input.{ValidatedCategory, ValidatedOwner}
 import eu.timepit.refined.api.{Refined, Validate}
 import eu.timepit.refined.refineV
 import eu.timepit.refined.string.Uuid

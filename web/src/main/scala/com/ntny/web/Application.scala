@@ -3,6 +3,7 @@ package com.ntny.web
 import cats.effect.{ExitCode, IO, IOApp}
 import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.dba.links.queries.CategoriesQuery
+import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
 import org.http4s.HttpApp
 import org.http4s.server.Router
@@ -12,7 +13,8 @@ object Application extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
     Infrastructure.transactor().use{ xa =>
       val router = Router(
-        version.v1 -> new LinksRoutes[IO](xa).routes
+        version.v1 -> new LinksRoutes[IO](xa).routes,
+        version.v1 -> new CategoriesRoutes[IO](xa).routes
       )
 
       import org.http4s.implicits._

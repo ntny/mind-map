@@ -1,4 +1,4 @@
-package com.ntny.web.features.links.models
+package com.ntny.web.features.links.input
 
 import java.time.{LocalDateTime, ZoneOffset}
 import java.util.UUID
