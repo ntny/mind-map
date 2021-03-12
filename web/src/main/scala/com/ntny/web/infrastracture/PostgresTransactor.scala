@@ -1,6 +1,6 @@
 package com.ntny.web.infrastracture
 
-import cats.effect.{Async, Blocker, ContextShift, IO, Resource}
+import cats.effect.{Async, Blocker, ContextShift, Resource}
 import com.ntny.web.Config.{DbPassword, DbUserName, JdbcUrl}
 import com.zaxxer.hikari.HikariConfig
 import doobie.hikari.HikariTransactor
