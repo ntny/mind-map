@@ -1,11 +1,11 @@
-package com.ntny.web
+package com.ntny.web.codecs
 
 import cats.MonadThrow
 import cats.syntax.all._
 import io.circe.Decoder
 import org.http4s._
-import org.http4s.dsl.Http4sDsl
 import org.http4s.circe._
+import org.http4s.dsl.Http4sDsl
 
 object decoder {
 

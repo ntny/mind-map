@@ -4,7 +4,7 @@ import cats.effect.BracketThrow
 import cats.{Defer, Monad, MonadThrow}
 import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.dba.links.queries.CategoryLinksQuery
-import com.ntny.web.decoder._
+import com.ntny.web.codecs.decoder._
 import com.ntny.web.features.links.input.ValidatedNewLink
 import com.ntny.web.codecs.json._
 import com.ntny.web.codecs.query._

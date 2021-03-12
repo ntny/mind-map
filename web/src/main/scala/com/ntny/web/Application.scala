@@ -1,17 +1,21 @@
 package com.ntny.web
 
-import cats.effect.{ExitCode, IO, IOApp}
+import cats.effect.{Blocker, ExitCode, IO, IOApp}
 import com.ntny.dba.categories.queries.CategoriesQuery
 import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
+import com.ntny.web.infrastracture.PostgresTransactor
 import org.http4s.HttpApp
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 
+import scala.concurrent.ExecutionContext
+
 object Application extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
-    Infrastructure.transactor().use{ xa =>
+    val blocker: Blocker = Blocker.liftExecutionContext(ExecutionContext.global)
+    PostgresTransactor[IO](Config.jdbcUrl, Config.databaseUserName, Config.databasePassword)(blocker).use{ xa =>
       val router = Router(
         version.v1 -> new LinksRoutes[IO](xa).routes,
         version.v1 -> new CategoriesRoutes[IO](xa).routes
