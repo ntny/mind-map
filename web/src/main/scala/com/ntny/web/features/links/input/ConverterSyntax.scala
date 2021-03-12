@@ -1,6 +1,6 @@
 package com.ntny.web.features.links.input
 
-import com.ntny.dba.{Category, CategoryLinkParams, Owner}
+import com.ntny.dba.{CategoryId, CategoryLinkParams, Owner}
 
 import java.time.{LocalDateTime, ZoneOffset}
 import java.util.UUID
@@ -11,7 +11,7 @@ object ConverterSyntax {
   implicit class ValidatedCategoryOps(p: (ValidatedOwner, ValidatedCategory)) {
     def toDomain = CategoryLinkParams(
       Owner(UUID.fromString(p._1.id.value)),
-      Category(UUID.fromString(p._2.id.value))
+      CategoryId(UUID.fromString(p._2.id.value))
     )
   }
 
