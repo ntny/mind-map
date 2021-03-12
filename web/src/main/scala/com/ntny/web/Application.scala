@@ -1,8 +1,8 @@
 package com.ntny.web
 
 import cats.effect.{ExitCode, IO, IOApp}
+import com.ntny.dba.categories.queries.CategoriesQuery
 import com.ntny.dba.links.commands.PutLinkCommand
-import com.ntny.dba.links.queries.CategoriesQuery
 import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
 import org.http4s.HttpApp

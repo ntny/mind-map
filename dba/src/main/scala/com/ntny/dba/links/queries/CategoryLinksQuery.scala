@@ -1,7 +1,6 @@
 package com.ntny.dba.links.queries
 
-import com.ntny.dba.Query
-import com.ntny.dba.links.queries.input.CategoryLinkParams
+import com.ntny.dba.{CategoryLinkParams, Query}
 import com.ntny.dba.links.queries.output.Link
 import doobie.ConnectionIO
 import com.ntny.dba.codecs.readers._

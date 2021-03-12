@@ -1,8 +1,9 @@
 package com.ntny.web.features.links.input
 
+import com.ntny.dba.{Category, CategoryLinkParams, Owner}
+
 import java.time.{LocalDateTime, ZoneOffset}
 import java.util.UUID
-import com.ntny.dba.links.queries.input.{Category, CategoryLinkParams, Owner}
 import com.ntny.dba.links.commands.input.NewLink
 
 object ConverterSyntax {

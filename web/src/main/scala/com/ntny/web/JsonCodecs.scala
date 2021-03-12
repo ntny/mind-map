@@ -1,6 +1,6 @@
 package com.ntny.web
 
-import com.ntny.dba.links.queries.output.Category
+import com.ntny.dba.categories.output.Category
 import com.ntny.dba.links.queries.output.Link
 import com.ntny.web.features.links.input.{ValidatedCategory, ValidatedNewLink}
 import io.circe.{Decoder, Encoder}

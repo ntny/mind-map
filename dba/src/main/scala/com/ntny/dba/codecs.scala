@@ -1,7 +1,7 @@
 package com.ntny.dba
 
 import com.ntny.dba.links.queries.output
-import com.ntny.dba.links.queries.output.{Category, Link}
+import com.ntny.dba.links.queries.output.Link
 
 import java.time.LocalDateTime
 import doobie.util.Read
@@ -20,12 +20,12 @@ object codecs {
     ].map{
       case (url, name, description, deadline) => output.Link(url, name, description, deadline)
     }
-    implicit val category: Read[Category] = Read[
+    implicit val category: Read[categories.output.Category] = Read[
       (
         String
         )
     ].map{
-      case (name) => output.Category(name)
+      case (name) => categories.output.Category(name)
     }
   }
 }

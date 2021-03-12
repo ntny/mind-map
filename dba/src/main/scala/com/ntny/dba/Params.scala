@@ -1,4 +1,4 @@
-package com.ntny.dba.links.queries.input
+package com.ntny.dba
 
 import java.util.UUID
 

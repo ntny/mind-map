@@ -1,10 +1,9 @@
-package com.ntny.dba.links.queries
+package com.ntny.dba.categories.queries
 
-import com.ntny.dba.Query
-import com.ntny.dba.links.queries.input.Owner
-import com.ntny.dba.links.queries.output.Category
-import doobie.ConnectionIO
+import com.ntny.dba.categories.output.Category
 import com.ntny.dba.codecs.readers._
+import com.ntny.dba.{Owner, Query}
+import doobie.ConnectionIO
 import doobie.implicits.toSqlInterpolator
 
 class CategoriesQuery(owner: Owner) extends Query[ConnectionIO, List[Category]] {
