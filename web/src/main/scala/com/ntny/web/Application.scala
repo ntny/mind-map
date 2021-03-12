@@ -1,8 +1,6 @@
 package com.ntny.web
 
 import cats.effect.{Blocker, ExitCode, IO, IOApp}
-import com.ntny.dba.categories.queries.CategoriesQuery
-import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
 import com.ntny.web.infrastracture.PostgresTransactor
