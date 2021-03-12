@@ -1,5 +1,6 @@
-package com.ntny.web
-import com.ntny.web.query._
+package com.ntny.web.codecs
+
+import com.ntny.web.codecs.query._
 import com.ntny.web.features.links.input.{ValidatedCategory, ValidatedOwner}
 
 object queryMatcher extends QueryMatcherCodecs

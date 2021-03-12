@@ -1,8 +1,8 @@
-package com.ntny.web
+package com.ntny.web.codecs
 
 import com.ntny.dba.categories.output.Category
 import com.ntny.dba.links.queries.output.Link
-import com.ntny.web.features.links.input.{ValidatedCategory, ValidatedNewLink}
+import com.ntny.web.features.links.input.ValidatedNewLink
 import io.circe.{Decoder, Encoder}
 import org.http4s.EntityEncoder
 import org.http4s.circe.jsonEncoderOf
