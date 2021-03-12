@@ -20,4 +20,9 @@ private[web] class QueryCodecs {
     QueryParamDecoder[String]
       .emap(id => refineV[Uuid](id).leftMap(m => ParseFailure(m,m)))
       .map(id => ValidatedCategory(id))
+
+
+  import org.http4s.dsl.impl.QueryParamDecoderMatcher
+  object categoryParam extends QueryParamDecoderMatcher[ValidatedCategory]("category")
+  object ownerParam extends QueryParamDecoderMatcher[ValidatedOwner]("owner")
 }

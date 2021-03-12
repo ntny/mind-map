@@ -3,7 +3,7 @@ package com.ntny.web.features.categories
 import cats.{Defer, Monad, MonadThrow}
 import cats.effect.BracketThrow
 import com.ntny.dba.categories.queries.CategoriesQuery
-import com.ntny.web.codecs.queryMatcher._
+import com.ntny.web.codecs.query._
 import com.ntny.web.codecs.json._
 import doobie.implicits._
 import doobie.hikari.HikariTransactor

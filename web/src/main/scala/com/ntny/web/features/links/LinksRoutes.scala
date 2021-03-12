@@ -7,7 +7,7 @@ import com.ntny.dba.links.queries.CategoryLinksQuery
 import com.ntny.web.decoder._
 import com.ntny.web.features.links.input.ValidatedNewLink
 import com.ntny.web.codecs.json._
-import com.ntny.web.codecs.queryMatcher._
+import com.ntny.web.codecs.query._
 import doobie.hikari.HikariTransactor
 import doobie.implicits._
 import org.http4s.HttpRoutes
