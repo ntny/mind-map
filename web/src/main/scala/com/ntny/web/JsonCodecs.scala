@@ -1,7 +1,8 @@
 package com.ntny.web
 
-import com.ntny.dba.links.Link
-import com.ntny.web.features.links.models.ValidatedLink
+import com.ntny.dba.links.queries.output.Category
+import com.ntny.dba.links.queries.output.Link
+import com.ntny.web.features.links.models.{ValidatedCategory, ValidatedNewLink}
 import io.circe.{Decoder, Encoder}
 import org.http4s.EntityEncoder
 import org.http4s.circe.jsonEncoderOf
@@ -15,6 +16,8 @@ private[web] class JsonCodecs {
   import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
   import eu.timepit.refined.types.AllTypes
 
-  implicit val linkDecoder: Decoder[ValidatedLink] = deriveDecoder[ValidatedLink]
+  implicit val linkDecoder: Decoder[ValidatedNewLink] = deriveDecoder[ValidatedNewLink]
+
   implicit val linkEncoder: Encoder[Link] = deriveEncoder[Link]
+  implicit val categoryEncoder: Encoder[Category] = deriveEncoder[Category]
 }

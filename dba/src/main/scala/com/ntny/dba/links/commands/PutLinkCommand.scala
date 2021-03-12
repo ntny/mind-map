@@ -1,7 +1,7 @@
 package com.ntny.dba.links.commands
 
 import com.ntny.dba.Command
-import com.ntny.dba.links.rows.NewLink
+import com.ntny.dba.links.commands.input.NewLink
 import doobie.free.connection.ConnectionIO
 import doobie.implicits._
 import doobie.implicits.javatime._
@@ -11,13 +11,15 @@ class PutLinkCommand(link: NewLink) extends Command[ConnectionIO] {
     sql"""
          INSERT INTO Links (
                    owner_id
+                   , category_id
                    , url
                    , name
                    , description
                    , deadline
                  )
-                 VALUES(
+                 VALUES (
                   ${link.ownerId.toString}::uuid
+                  , ${link.categoryId.toString}::uuid
                   , ${link.url}
                   , ${link.name}
                   , ${link.description}
