@@ -1,4 +1,4 @@
-package com.ntny.web.features.links.models
+package com.ntny.web.features.links.input
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.boolean.And
