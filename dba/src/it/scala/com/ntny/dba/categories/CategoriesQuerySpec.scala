@@ -1,6 +1,6 @@
 package com.ntny.dba.categories
 
-import com.dimafeng.testcontainers.{ForAllTestContainer, PostgreSQLContainer}
+import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.ntny.dba.{CategoryName, Owner, PostgresSqlTest}
 import com.ntny.dba.categories.commands.PutCategory
 import com.ntny.dba.categories.commands.input.NewCategory
@@ -12,7 +12,7 @@ import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
 import java.util.UUID
 
-class CategoriesQuerySpec extends AnyFlatSpec with Matchers with ForAllTestContainer with PostgresSqlTest  {
+class CategoriesQuerySpec extends AnyFlatSpec with Matchers with PostgresSqlTest  {
   override val container: PostgreSQLContainer = PostgreSQLContainer()
   import doobie.implicits._
 

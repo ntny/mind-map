@@ -2,7 +2,7 @@ package com.ntny.dba.links
 
 import java.time.LocalDateTime
 import java.util.UUID
-import com.dimafeng.testcontainers.{ForAllTestContainer, PostgreSQLContainer}
+import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.ntny.dba.{CategoryId, CategoryLinkParams, CategoryName, Owner, PostgresSqlTest}
 import com.ntny.dba.categories.commands.PutCategory
 import com.ntny.dba.categories.commands.input.NewCategory
@@ -14,7 +14,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
-class PutLinkSpec extends AnyFlatSpec with Matchers with ForAllTestContainer with PostgresSqlTest {
+class PutLinkSpec extends AnyFlatSpec with Matchers  with PostgresSqlTest {
   override val container: PostgreSQLContainer = PostgreSQLContainer()
   import doobie.implicits._
 

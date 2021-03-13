@@ -1,7 +1,7 @@
 package com.ntny.dba
 
 import cats.effect.{Blocker, IO}
-import com.dimafeng.testcontainers.PostgreSQLContainer
+import com.dimafeng.testcontainers.{ForAllTestContainer, PostgreSQLContainer}
 import doobie.util.ExecutionContexts
 import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
@@ -9,7 +9,7 @@ import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.output.MigrateResult
 import org.scalatest.{BeforeAndAfter, Suite}
 
-trait PostgresSqlTest extends BeforeAndAfter{ self: Suite =>
+trait PostgresSqlTest extends ForAllTestContainer{ self: Suite =>
   def container: PostgreSQLContainer
 
   private implicit val cs = IO.contextShift(ExecutionContexts.synchronous)
