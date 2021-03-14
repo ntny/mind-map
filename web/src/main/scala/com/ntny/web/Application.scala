@@ -11,7 +11,6 @@ import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 
 import java.nio.charset.StandardCharsets
-import java.util.Base64
 import scala.concurrent.ExecutionContext
 import scala.util.Try
 
@@ -19,12 +18,14 @@ object Application extends IOApp {
 
   def authenticateMock(token: String): IO[Option[AuthenticatedUser]] = {
     import eu.timepit.refined.refineV
+    import java.util.Base64
+
     val decoded = Try {
       Base64.getDecoder.decode(token.getBytes(StandardCharsets.UTF_8))
     }.map(new String(_))
       .map(refineV[Uuid](_).map(AuthenticatedUser).toOption)
     IO.pure(decoded.fold(_ => None, s => s))
-  }
+  }k
 
   val authMiddleware = BearerTokenAuthUserMiddleware[IO](authenticateMock)
 
