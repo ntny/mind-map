@@ -25,7 +25,7 @@ object Application extends IOApp {
     }.map(new String(_))
       .map(refineV[Uuid](_).map(AuthenticatedUser).toOption)
     IO.pure(decoded.fold(_ => None, s => s))
-  }k
+  }
 
   val authMiddleware = BearerTokenAuthUserMiddleware[IO](authenticateMock)
 
