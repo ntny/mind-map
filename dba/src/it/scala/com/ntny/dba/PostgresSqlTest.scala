@@ -7,12 +7,15 @@ import doobie.util.transactor.Transactor
 import doobie.util.transactor.Transactor.Aux
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.output.MigrateResult
-import org.scalatest.{BeforeAndAfter, Suite}
+import org.scalatest.Suite
 
-trait PostgresSqlTest extends ForAllTestContainer{ self: Suite =>
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
+
+trait PostgresSqlTest extends ForAllTestContainer { self: Suite =>
   def container: PostgreSQLContainer
 
-  private implicit val cs = IO.contextShift(ExecutionContexts.synchronous)
+  private implicit val cs = IO.contextShift(ExecutionContext.global)
   lazy val xa: Aux[IO, Unit] = PostgresSqlTransactor(container)
 }
 
@@ -35,7 +38,7 @@ private object PostgresSqlTransactor {
       container.container.getJdbcUrl,
       container.username,
       container.password,
-      Blocker.liftExecutionContext(ExecutionContexts.synchronous)
+      Blocker.liftExecutionContext(ExecutionContext.fromExecutor(Executors.newFixedThreadPool(3)))
     )
   }
 }

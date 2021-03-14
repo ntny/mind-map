@@ -1,22 +1,39 @@
 package com.ntny.web
 
 import cats.effect.{Blocker, ExitCode, IO, IOApp}
+import com.ntny.web.features.authentification.input.{AuthenticatedUser, BearerTokenAuthUserMiddleware}
 import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
 import com.ntny.web.infrastracture.PostgresTransactor
+import eu.timepit.refined.string.Uuid
 import org.http4s.HttpApp
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import scala.concurrent.ExecutionContext
+import scala.util.Try
 
 object Application extends IOApp {
+
+  def authenticateMock(token: String): IO[Option[AuthenticatedUser]] = {
+    import eu.timepit.refined.refineV
+    val decoded = Try {
+      Base64.getDecoder.decode(token.getBytes(StandardCharsets.UTF_8))
+    }.map(new String(_))
+      .map(refineV[Uuid](_).map(AuthenticatedUser).toOption)
+    IO.pure(decoded.fold(_ => None, s => s))
+  }
+
+  val authMiddleware = BearerTokenAuthUserMiddleware[IO](authenticateMock)
+
   override def run(args: List[String]): IO[ExitCode] = {
     val blocker: Blocker = Blocker.liftExecutionContext(ExecutionContext.global)
     PostgresTransactor[IO](Config.jdbcUrl, Config.databaseUserName, Config.databasePassword)(blocker).use{ xa =>
       val router = Router(
-        version.v1 -> new LinksRoutes[IO](xa).routes,
-        version.v1 -> new CategoriesRoutes[IO](xa).routes
+        version.v1 -> authMiddleware(new LinksRoutes[IO](xa).routes),
+        version.v1 -> authMiddleware(new CategoriesRoutes[IO](xa).routes)
       )
 
       import org.http4s.implicits._

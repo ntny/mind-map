@@ -8,6 +8,8 @@ import doobie.util.Read
 import doobie.implicits._
 import doobie.implicits.javatime._
 
+import java.util.UUID
+
 object codecs {
   object readers {
     implicit val link: Read[Link] = Read[
@@ -20,12 +22,9 @@ object codecs {
     ].map{
       case (url, name, description, deadline) => output.Link(url, name, description, deadline)
     }
-    implicit val category: Read[categories.output.Category] = Read[
-      (
-        String
-        )
-    ].map{
-      case (name) => categories.output.Category(name)
+    implicit val category: Read[categories.output.Category] = Read[(String, String)]
+      .map{
+      case (name, id) => categories.output.Category(name = name, id = UUID.fromString(id))
     }
   }
 }

@@ -3,9 +3,8 @@ package com.ntny.dba.links
 import java.time.LocalDateTime
 import java.util.UUID
 import com.dimafeng.testcontainers.PostgreSQLContainer
-import com.ntny.dba.{CategoryId, CategoryLinkParams, CategoryName, Owner, PostgresSqlTest}
+import com.ntny.dba.{AuthenticatedOwner, CategoryId, NewCategoryName, PostgresSqlTest}
 import com.ntny.dba.categories.commands.PutCategory
-import com.ntny.dba.categories.commands.input.NewCategory
 import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.dba.links.commands.input.NewLink
 import com.ntny.dba.links.queries.CategoryLinksQuery
@@ -22,16 +21,15 @@ class PutLinkSpec extends AnyFlatSpec with Matchers  with PostgresSqlTest {
   it should "correct put Link into db" in {
     val ownerId = UUID.randomUUID()
     val now = LocalDateTime.now()
-    val categoryId = PutCategory(NewCategory(Owner(ownerId), CategoryName("category"))).transact(xa).unsafeRunSync()
+    val categoryId = PutCategory(AuthenticatedOwner(ownerId), NewCategoryName("category")).transact(xa).unsafeRunSync()
     val link = NewLink(
-      ownerId
-      , categoryId
+       categoryId
       , "www.link.com"
       , "name-1"
       , Some("desciption")
       , now
     )
-    PutLinkCommand(link).transact(xa).unsafeRunSync()
+    PutLinkCommand(AuthenticatedOwner(ownerId), link).transact(xa).unsafeRunSync()
 
     val actual =
       sql"""
@@ -44,42 +42,37 @@ class PutLinkSpec extends AnyFlatSpec with Matchers  with PostgresSqlTest {
   it should "correct select Links from db" in {
     val ownerId = UUID.randomUUID()
     val now = LocalDateTime.now()
-    val categoryId = PutCategory(NewCategory(Owner(ownerId), CategoryName("category"))).transact(xa).unsafeRunSync()
+    val categoryId = PutCategory(AuthenticatedOwner(ownerId), NewCategoryName("category")).transact(xa).unsafeRunSync()
     val link1 = NewLink(
-      ownerId
-      , categoryId
+       categoryId
       , "www.link.com-1"
       , "name-1"
       , Some("description-1")
       , now
     )
     val link2 = NewLink(
-      ownerId
-      , categoryId
+       categoryId
       , "www.link.com-2"
       , "name-2"
       , Some("description-2")
       , now
     )
 
-    val categoryId2 = PutCategory(NewCategory(Owner(ownerId), CategoryName("category"))).transact(xa).unsafeRunSync()
+    val categoryId2 = PutCategory(AuthenticatedOwner(ownerId), NewCategoryName("category-2")).transact(xa).unsafeRunSync()
     val link3 = NewLink(
-      ownerId
-      , categoryId2
+       categoryId2
       , "www.link.com-3"
       , "name-3"
       , Some("description-2")
       , now
     )
 
-    PutLinkCommand(link1).transact(xa).unsafeRunSync()
-    PutLinkCommand(link2).transact(xa).unsafeRunSync()
-    PutLinkCommand(link3).transact(xa).unsafeRunSync()
+    PutLinkCommand(AuthenticatedOwner(ownerId), link1).transact(xa).unsafeRunSync()
+    PutLinkCommand(AuthenticatedOwner(ownerId), link2).transact(xa).unsafeRunSync()
+    PutLinkCommand(AuthenticatedOwner(ownerId), link3).transact(xa).unsafeRunSync()
 
-    val actual = CategoryLinksQuery(CategoryLinkParams(
-      Owner(ownerId)
-      , CategoryId(categoryId)
-    )).transact(xa).unsafeRunSync()
+    val actual = CategoryLinksQuery(AuthenticatedOwner(ownerId), CategoryId(categoryId))
+      .transact(xa).unsafeRunSync()
 
     val expected = List(
       Link(

@@ -1,28 +1,31 @@
 package com.ntny.web.features.links.input
 
-import com.ntny.dba.{CategoryId, CategoryLinkParams, Owner}
+import com.ntny.dba.{AuthenticatedOwner, CategoryId, NewCategoryName}
 
 import java.time.{LocalDateTime, ZoneOffset}
 import java.util.UUID
 import com.ntny.dba.links.commands.input.NewLink
+import com.ntny.web.features.authentification.input.AuthenticatedUser
+import com.ntny.web.features.categories.input.ValidatedCategoryName
+import com.ntny.web.features.cross.input.ValidatedCategoryId
 
 object ConverterSyntax {
 
-  implicit class ValidatedCategoryOps(p: (ValidatedOwner, ValidatedCategory)) {
-    def toDomain = CategoryLinkParams(
-      Owner(UUID.fromString(p._1.id.value)),
-      CategoryId(UUID.fromString(p._2.id.value))
-    )
+  implicit class ValidatedCategoryIdOps(c: ValidatedCategoryId) {
+    def toDomain = CategoryId(UUID.fromString(c.id.value))
   }
 
-  implicit class ValidatedOwnerOps(owner: ValidatedOwner) {
-    def toDomain = Owner(UUID.fromString(owner.id.value))
+  implicit class ValidatedCategoryNameOps(c: ValidatedCategoryName) {
+    def toDomain = NewCategoryName(c.name.value)
+  }
+
+  implicit class AuthenticatedUserOps(owner: AuthenticatedUser) {
+    def toDomain = AuthenticatedOwner(UUID.fromString(owner.id.value))
   }
 
   implicit class ValidatedLinkOps(link: ValidatedNewLink) {
     def toDomain = NewLink(
-      UUID.fromString(link.ownerId.value)
-      , UUID.fromString(link.categoryId.value)
+      UUID.fromString(link.categoryId.value)
       , link.url.value
       , link.name.value
       , link.description.map(_.value)

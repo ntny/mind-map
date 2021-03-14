@@ -1,12 +1,12 @@
 package com.ntny.dba.categories.commands
 
-import com.ntny.dba.categories.commands.input.NewCategory
+import com.ntny.dba.{AuthenticatedOwner, NewCategoryName}
 import doobie.ConnectionIO
 import doobie.implicits.toSqlInterpolator
 
 import java.util.UUID
 
-class PutCategory(input: NewCategory) {
+class PutCategory(owner: AuthenticatedOwner, categoryName: NewCategoryName) {
   def exec(): ConnectionIO[UUID] = {
     val categoryId = UUID.randomUUID()
     sql"""
@@ -17,13 +17,13 @@ class PutCategory(input: NewCategory) {
                  )
                  VALUES (
                   ${categoryId.toString}::uuid
-                  , ${input.ownerId.id.toString}::uuid
-                  , ${input.name.name}
+                  , ${owner.id.toString}::uuid
+                  , ${categoryName.name}
                  )
        """.update.run.map(_ => categoryId)
   }
 }
 
 object PutCategory {
-  def apply(input: NewCategory): ConnectionIO[UUID] = new PutCategory(input).exec()
+  def apply(owner: AuthenticatedOwner, categoryName: NewCategoryName): ConnectionIO[UUID] = new PutCategory(owner, categoryName).exec()
 }

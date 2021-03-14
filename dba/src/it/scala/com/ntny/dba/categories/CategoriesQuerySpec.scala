@@ -1,9 +1,8 @@
 package com.ntny.dba.categories
 
 import com.dimafeng.testcontainers.PostgreSQLContainer
-import com.ntny.dba.{CategoryName, Owner, PostgresSqlTest}
+import com.ntny.dba.{AuthenticatedOwner, NewCategoryName, PostgresSqlTest}
 import com.ntny.dba.categories.commands.PutCategory
-import com.ntny.dba.categories.commands.input.NewCategory
 import com.ntny.dba.categories.output.Category
 import com.ntny.dba.categories.queries.CategoriesQuery
 import org.scalatest.flatspec.AnyFlatSpec
@@ -20,17 +19,19 @@ class CategoriesQuerySpec extends AnyFlatSpec with Matchers with PostgresSqlTest
     val ownerId1 = UUID.randomUUID()
     val ownerId2 = UUID.randomUUID()
 
-    PutCategory(NewCategory(Owner(ownerId1), CategoryName("name-1"))).transact(xa).unsafeRunSync()
-    PutCategory(NewCategory(Owner(ownerId1), CategoryName("name-2"))).transact(xa).unsafeRunSync()
-    PutCategory(NewCategory(Owner(ownerId2), CategoryName("name-3"))).transact(xa).unsafeRunSync()
+    val categoryId1 = PutCategory(AuthenticatedOwner(ownerId1), NewCategoryName("name-1")).transact(xa).unsafeRunSync()
+    val categoryId2 = PutCategory(AuthenticatedOwner(ownerId1), NewCategoryName("name-2")).transact(xa).unsafeRunSync()
+    PutCategory(AuthenticatedOwner(ownerId2), NewCategoryName("name-3")).transact(xa).unsafeRunSync()
 
-    val actual = CategoriesQuery(Owner(ownerId1)).transact(xa).unsafeRunSync()
+    val actual = CategoriesQuery(AuthenticatedOwner(ownerId1)).transact(xa).unsafeRunSync()
     val expected = List(
       Category(
-        "name-1"
+        name = "name-1"
+        , id = categoryId1
       ),
       Category(
-        "name-2"
+        name = "name-2",
+        id = categoryId2
       )
     )
     actual should contain theSameElementsAs expected

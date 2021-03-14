@@ -5,8 +5,7 @@ import java.util.UUID
 
 
 case class NewLink(
-                    ownerId: UUID
-                   , categoryId: UUID
+                   categoryId: UUID
                    , url: String
                    , name: String
                    , description: Option[String]

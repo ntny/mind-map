@@ -5,6 +5,8 @@ ThisBuild / organization := "com.ntny"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.13.4"
 
+Test / fork := true
+
 lazy val mind_map = (project in file("."))
   .aggregate(web, dba)
 
@@ -33,9 +35,9 @@ lazy val dba = (project in file("dba"))
   .enablePlugins(FlywayPlugin)
   .configs(IntegrationTest)
   .settings(
-      flywayUrl := "jdbc:postgresql://localhost:5432/postgres",
-      flywayUser := "postgres",
-      flywayPassword := "password123",
+      flywayUrl := sys.env.getOrElse("DB_URL", "jdbc:postgresql://localhost:5432/postgres"),
+      flywayUser := sys.env.getOrElse("DB_USER", "postgres"),
+      flywayPassword := sys.env.getOrElse("DB_PASSWORD", "password123"),
       flywayLocations += "db/migrations",
       Defaults.itSettings,
   libraryDependencies ++= Seq(

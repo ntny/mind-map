@@ -10,8 +10,7 @@ import eu.timepit.refined.types.string.NonEmptyString
 
 
 case class ValidatedNewLink(
-                             ownerId: String Refined Uuid
-                             , categoryId: String Refined Uuid
+                             categoryId: String Refined Uuid
                              , url: String Refined Url
                              , name: String Refined And[NonEmpty, MaxSize[300]]
                              , description: Option[NonEmptyString]

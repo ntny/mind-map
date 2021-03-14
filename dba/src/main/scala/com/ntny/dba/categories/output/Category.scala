@@ -1,3 +1,5 @@
 package com.ntny.dba.categories.output
 
-case class Category(name: String)
+import java.util.UUID
+
+case class Category(id: UUID, name: String)
