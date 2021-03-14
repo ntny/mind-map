@@ -22,9 +22,9 @@ object codecs {
     ].map{
       case (url, name, description, deadline) => output.Link(url, name, description, deadline)
     }
-    implicit val category: Read[categories.output.Category] = Read[(String, String)]
+    implicit val category: Read[categories.output.Category] = Read[(String, String, Int)]
       .map{
-      case (name, id) => categories.output.Category(name = name, id = UUID.fromString(id))
+      case (name, id, links) => categories.output.Category(name = name, id = UUID.fromString(id), links = links)
     }
   }
 }

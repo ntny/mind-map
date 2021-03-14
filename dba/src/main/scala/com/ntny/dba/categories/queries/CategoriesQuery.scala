@@ -9,8 +9,10 @@ import doobie.implicits.toSqlInterpolator
 class CategoriesQuery(owner: AuthenticatedOwner) extends Query[ConnectionIO, List[Category]] {
   override def exec(): ConnectionIO[List[Category]] = {
     sql"""
-        SELECT name, category_id
-         FROM categories
+        SELECT name,
+         category_id,
+         (SELECT count(category_id) FROM links as l WHERE l.category_id = c.category_id AND l.owner_id = c.owner_id) as links
+         FROM categories as c
          WHERE owner_id = ${owner.id.toString}::uuid
          ORDER BY created DESC
        """.query[Category].to[List]
