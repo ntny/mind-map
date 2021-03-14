@@ -41,7 +41,7 @@ object Application extends IOApp {
       val httpApp: HttpApp[IO] = router.orNotFound
 
       import scala.concurrent.ExecutionContext.Implicits.global
-      val serverBuilder = BlazeServerBuilder[IO](global).bindHttp(8080, "localhost").withHttpApp(httpApp)
+      val serverBuilder = BlazeServerBuilder[IO](global).bindHttp(Config.apiPort.value, Config.apiHost.value).withHttpApp(httpApp)
       serverBuilder
         .serve
         .compile
