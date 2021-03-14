@@ -2,7 +2,7 @@ package com.ntny.web
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.boolean.And
-import eu.timepit.refined.numeric.{Greater, Less, Positive}
+import eu.timepit.refined.numeric.{Greater, Less}
 import eu.timepit.refined.types.string.NonEmptyString
 
 object Config {

@@ -4,7 +4,7 @@ import cats.{Defer, Monad, MonadThrow}
 import cats.effect.BracketThrow
 import com.ntny.dba.categories.commands.PutCategory
 import com.ntny.dba.categories.queries.CategoriesQuery
-import com.ntny.web.features.authentification.input.AuthenticatedUser
+import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.categories.input.ValidatedCategoryName
 import doobie.hikari.HikariTransactor
 import org.http4s.{AuthedRoutes, HttpRoutes}

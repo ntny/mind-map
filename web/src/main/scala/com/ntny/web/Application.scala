@@ -1,10 +1,11 @@
 package com.ntny.web
 
 import cats.effect.{Blocker, ExitCode, IO, IOApp}
-import com.ntny.web.features.authentification.input.{AuthenticatedUser, BearerTokenAuthUserMiddleware}
+import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.categories.CategoriesRoutes
 import com.ntny.web.features.links.LinksRoutes
 import com.ntny.web.infrastracture.PostgresTransactor
+import com.ntny.web.middleware.authentication.BearerTokenAuthMiddleware
 import eu.timepit.refined.string.Uuid
 import org.http4s.HttpApp
 import org.http4s.server.Router
@@ -27,7 +28,7 @@ object Application extends IOApp {
     IO.pure(decoded.fold(_ => None, s => s))
   }
 
-  val authMiddleware = BearerTokenAuthUserMiddleware[IO](authenticateMock)
+  val authMiddleware = BearerTokenAuthMiddleware[IO](authenticateMock)
 
   override def run(args: List[String]): IO[ExitCode] = {
     val blocker: Blocker = Blocker.liftExecutionContext(ExecutionContext.global)

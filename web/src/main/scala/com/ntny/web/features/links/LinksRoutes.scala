@@ -4,7 +4,7 @@ import cats.effect.BracketThrow
 import cats.{Defer, Monad, MonadThrow}
 import com.ntny.dba.links.commands.PutLinkCommand
 import com.ntny.dba.links.queries.CategoryLinksQuery
-import com.ntny.web.features.authentification.input.AuthenticatedUser
+import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.links.input.ValidatedNewLink
 import doobie.hikari.HikariTransactor
 import org.http4s.{AuthedRoutes, HttpRoutes}

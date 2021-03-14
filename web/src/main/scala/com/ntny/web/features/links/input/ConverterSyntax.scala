@@ -5,9 +5,8 @@ import com.ntny.dba.{AuthenticatedOwner, CategoryId, NewCategoryName}
 import java.time.{LocalDateTime, ZoneOffset}
 import java.util.UUID
 import com.ntny.dba.links.commands.input.NewLink
-import com.ntny.web.features.authentification.input.AuthenticatedUser
+import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.categories.input.ValidatedCategoryName
-import com.ntny.web.features.cross.input.ValidatedCategoryId
 
 object ConverterSyntax {
 

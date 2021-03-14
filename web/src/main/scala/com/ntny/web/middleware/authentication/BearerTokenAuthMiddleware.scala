@@ -1,33 +1,37 @@
-package com.ntny.web.features.authentification.input
+package com.ntny.web.middleware.authentication
 
 import cats.Monad
 import cats.data.{EitherT, Kleisli, OptionT}
+import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import org.http4s.Credentials.Token
 import org.http4s.dsl.Http4sDsl
-import org.http4s.{AuthScheme, AuthedRoutes, Request}
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
+import org.http4s.{AuthScheme, AuthedRoutes, Request}
 
-object BearerTokenAuthUserMiddleware {
+object BearerTokenAuthMiddleware {
+
   import cats.implicits._
 
-  def apply[F[_]: Monad](authenticate: String => F[Option[AuthenticatedUser]]): AuthMiddleware[F, AuthenticatedUser] = {
+  def apply[F[_] : Monad](authenticate: String => F[Option[AuthenticatedUser]]): AuthMiddleware[F, AuthenticatedUser] = {
 
-    val dsl = new Http4sDsl[F] {}; import dsl._
+    val dsl = new Http4sDsl[F] {};
+    import dsl._
 
     val onFailure: AuthedRoutes[String, F] =
       Kleisli(req => OptionT.liftF(Forbidden(req.context)))
 
     def authUser: Kleisli[F, Request[F], Either[String, AuthenticatedUser]] = {
-      Kleisli{
+      Kleisli {
         request =>
           val authenticated = for {
             token <- EitherT.fromEither[F](request.bearerToken.fold(notFoundBearerToken)(_.asRight[String]))
             user <- EitherT(authenticate(token).map(_.fold(unrecognizedBearerToken)(_.asRight[String])))
           } yield user
           authenticated.fold(l => l.asLeft[AuthenticatedUser], r => r.asRight[String])
-         }
+      }
     }
+
     AuthMiddleware(authUser, onFailure)
   }
 
@@ -40,4 +44,5 @@ object BearerTokenAuthUserMiddleware {
       case Authorization(Token(AuthScheme.Bearer, token)) => token
     }
   }
+
 }

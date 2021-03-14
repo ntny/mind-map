@@ -1,4 +1,4 @@
-package com.ntny.web.features.authentification.input
+package com.ntny.web.middleware.authentication.output
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.string.Uuid
