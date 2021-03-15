@@ -4,6 +4,7 @@ import com.ntny.dba.categories.output.Category
 import com.ntny.dba.links.queries.output.Link
 import com.ntny.web.features.categories.input.ValidatedCategoryName
 import com.ntny.web.features.links.input.ValidatedNewLink
+import com.ntny.web.features.preview.output.{CategoryPreview, LinkPreview}
 import io.circe.{Decoder, Encoder}
 import org.http4s.EntityEncoder
 import org.http4s.circe.jsonEncoderOf
@@ -21,5 +22,7 @@ private[web] class JsonCodecs {
   implicit val categoryIdDecoder: Decoder[ValidatedCategoryName] = deriveDecoder[ValidatedCategoryName]
 
   implicit val linkEncoder: Encoder[Link] = deriveEncoder[Link]
+  implicit val categoryPreviewEncoder: Encoder[CategoryPreview] = deriveEncoder[CategoryPreview]
+  implicit val linkPreviewEncoder: Encoder[LinkPreview] = deriveEncoder[LinkPreview]
   implicit val categoryEncoder: Encoder[Category] = deriveEncoder[Category]
 }

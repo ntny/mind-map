@@ -7,7 +7,7 @@ import com.ntny.dba.links.queries.CategoryLinksQuery
 import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.links.input.ValidatedNewLink
 import doobie.hikari.HikariTransactor
-import org.http4s.{AuthedRoutes, HttpRoutes}
+import org.http4s.AuthedRoutes
 import org.http4s.circe.JsonDecoder
 import org.http4s.dsl.Http4sDsl
 
@@ -17,7 +17,6 @@ class LinksRoutes[F[_] : Defer : Monad : BracketThrow : JsonDecoder : MonadThrow
 ) extends Http4sDsl[F] {
 
   import doobie.implicits._
-
 
   import com.ntny.web.codecs.decoder._
   import com.ntny.web.codecs.json._

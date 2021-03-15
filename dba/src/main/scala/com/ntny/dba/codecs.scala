@@ -1,5 +1,6 @@
 package com.ntny.dba
 
+import com.ntny.dba.categories.output.CategoryLink
 import com.ntny.dba.links.queries.output
 import com.ntny.dba.links.queries.output.Link
 
@@ -25,6 +26,21 @@ object codecs {
     implicit val category: Read[categories.output.Category] = Read[(String, String, Int)]
       .map{
       case (name, id, links) => categories.output.Category(name = name, id = UUID.fromString(id), links = links)
+    }
+    implicit val categoryLink: Read[CategoryLink] = Read[
+      (
+        String
+        , String
+        , String
+        , String
+      )
+    ].map{
+      case (name, id, url, linkName) => CategoryLink(
+        UUID.fromString(id)
+        , name
+        , url
+        , linkName
+      )
     }
   }
 }

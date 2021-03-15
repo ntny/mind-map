@@ -10,8 +10,10 @@ import eu.timepit.refined.string.Uuid
 import org.http4s.HttpApp
 import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
-
 import java.nio.charset.StandardCharsets
+
+import com.ntny.web.features.preview.PreviewRoutes
+
 import scala.concurrent.ExecutionContext
 import scala.util.Try
 
@@ -35,7 +37,8 @@ object Application extends IOApp {
     PostgresTransactor[IO](Config.jdbcUrl, Config.databaseUserName, Config.databasePassword)(blocker).use{ xa =>
       val router = Router(
         version.v1 -> authMiddleware(new LinksRoutes[IO](xa).routes),
-        version.v1 -> authMiddleware(new CategoriesRoutes[IO](xa).routes)
+        version.v1 -> authMiddleware(new CategoriesRoutes[IO](xa).routes),
+        version.v1 -> authMiddleware(new PreviewRoutes[IO](xa).routes)
       )
 
       import org.http4s.implicits._
