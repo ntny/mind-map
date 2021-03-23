@@ -2,7 +2,7 @@ package com.ntny.web.features.links
 
 import cats.effect.BracketThrow
 import cats.{Defer, Monad, MonadThrow}
-import com.ntny.dba.links.commands.PutLinkCommand
+import com.ntny.dba.links.commands.{DeleteLinkCommand, PutLinkCommand}
 import com.ntny.dba.links.queries.CategoryLinksQuery
 import com.ntny.web.middleware.authentication.output.AuthenticatedUser
 import com.ntny.web.features.links.input.ValidatedNewLink
@@ -32,6 +32,10 @@ class LinksRoutes[F[_] : Defer : Monad : BracketThrow : JsonDecoder : MonadThrow
     case l @ PUT -> Root / "links" as user =>
       l.req.decodeR[ValidatedNewLink] { link: ValidatedNewLink =>
         Ok(PutLinkCommand(user.toDomain, link.toDomain).transact(transactor))
+      }
+    case l @ DELETE -> Root / "links" as user =>
+      l.req.decodeR[ValidatedNewLink] { link: ValidatedNewLink =>
+        Ok(DeleteLinkCommand(user.toDomain, link.url.value).transact(transactor))
       }
   }
 }
